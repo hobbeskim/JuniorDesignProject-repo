@@ -34,7 +34,6 @@ int main()
 		searchCombi(arr, num);
 		printf("index를 찾았습니다.\n");
 		printf("INDEX:%d  %d  %d", combiIndex[0], combiIndex[1], combiIndex[2]);
-		//printf("VALUE:%d  %d  %d", arr[combiIndex[0]], arr[combiIndex[1]], arr[combiIndex[2]]);
 	}
 	free(arr);
 
