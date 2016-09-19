@@ -34,7 +34,7 @@ int main(void)
 	{/* NbyN 배열 원소 입력*/
 		for (y = 0; y < N; y++) 
 		{
-			printf("%d*%d배열에서 [%d][%d]인자를 입력하세요>>", N, N, x, y);
+			printf("%d*%d배열에서 [%d][%d] 원소를 입력하세요>>", N, N, x, y);
 			scanf("%d", &nMatrix[x][y]);
 		}
 	}

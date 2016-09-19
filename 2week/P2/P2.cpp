@@ -30,7 +30,9 @@ int main(void)
 
 	afterOperation = multiFrac(A, B);
 	printf("%d/%d", afterOperation.numerator, afterOperation.denominator);
-
+	
+	getchar();
+	getchar();
 	return 0;
 
 }
