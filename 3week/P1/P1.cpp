@@ -47,7 +47,13 @@ int main()
 		printf("CASE#%d : number of rounds = %d\n", i + 1, roundCount);
 		roundCount = 0;
 	}
+
+	getchar();
+	getchar();
+	getchar();
+	return 0;
 }
+/*sorting 함수는 newSort에 인자를 넘겨 주기 위해 사용하는 값을 크기 순서대로 정렬해서 비교합니다.*/
 int *sorting(int * arr, int arraySize)
 {
 	int temp = 0;
@@ -67,6 +73,7 @@ int *sorting(int * arr, int arraySize)
 	return arr;
 
 }
+/*newSort는 선택된 랜덤 원소를 입력 받아, 스왑이 발생하면 1을 전달하고 카운트 하는 함수입니다.*/
 int newSort(int randElement, int * arr, int arraySize)
 {
 	int temp = 0;

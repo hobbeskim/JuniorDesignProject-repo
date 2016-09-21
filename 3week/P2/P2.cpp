@@ -1,3 +1,4 @@
+
 #include<stdio.h>
 #include<stdlib.h>
 #include<math.h>
@@ -17,8 +18,10 @@ int main()
 	int N;
 	int ** graphMatrix;
 
+	/*TEST 횟수 입력*/
 	printf("How many Case? >>");
 	scanf("%d", &numOfTestCase);
+
 
 	
 	for (int i = 0; i < numOfTestCase; i++)
@@ -48,8 +51,12 @@ int main()
 			}
 		}
 
-		printf("please insert edge info, ex) 1 2\n");
-		printf("if you insert -1 -1, edge insertion will end\n");
+		/*INTERFACE MESSAGE*/
+		printf("please insert edge info, ex) 1 2\n\n");
+		printf("if you insert -1 -1, edge insertion will end\n\n\n");
+
+
+		/*NODE EDGE 입력받는 while 문 사용자가 -1 -1 입력시 탈출*/
 		while (1)
 		{
 			int i, j = 1;
@@ -58,38 +65,60 @@ int main()
 			if (i == -1 && j == -1)
 				break;
 
-			graphMatrix[i][j] = 1;
-			graphMatrix[j][i] = 1;
-
-
+			graphMatrix[i-1][j-1] = 1;
+			graphMatrix[j-1][i-1] = 1;
+			/*e.g. 1번째 노드와 3번째 노드의 간선->그래프매트릭스에선 (0,2)/(2,0)*/
 		}
-		printf("case#%d : Cutnodes = ", i + 1);
+		
+		/*사용자가 입력한 정방행렬의 정보 띄워줌*/
 		for (int i = 0; i < N; i++)
 		{
-			currentCutNode=judgeCutNode(i,N, graphMatrix);
+			for (int j = 0; j < N; j++)
+				printf("%d ", graphMatrix[i][j]);
+			printf("\n");
+		}
 
+
+
+		/*CUTNODE STATUS PRINT*/
+		printf("\ncase#%d : Cutnodes = ", i + 1);
+		for (int i = 0; i < N; i++)
+		{/*노드 순회*/
+
+			/*judgeCutNode에서 판단하여, 해당 노드가 cutNode일 경우 1반환*/
+			currentCutNode = 0;
+			currentCutNode=judgeCutNode(i,N, graphMatrix);
+			
+			
+			/*해당 Node가 CutNode 이다!!!!*/
 			if (currentCutNode > 0)
 			{
-				printf("%d ", currentCutNode + 1);
+				printf("%d ", i + 1);
 				thereIsCutNode++;
 			}
+
 		}
+
+		/*cutNode가 없을 경우*/
 		if (thereIsCutNode == 0)
 			printf("NONE");
 
+
+		/*동적할당되었던 메모리 반환!*/
 		free(graphMatrix[0]);
 		free(graphMatrix);
 
-		
-		
 	}
 
 	return 0;
 
 }
 
+/*NbyN 정방 행렬의 곱 행렬을 구하기 위한 함수*/
 int ** graphMultiplier(int N, int ** A, int ** B)
 {
+
+	/* 곱 행렬의 정보를 저장한 새 행렬을 생성하고 초기화 합니다.*/
 	int ** newGraphMatrix;
 	newGraphMatrix = (int**)malloc(sizeof(int*)*N);
 	newGraphMatrix[0] = (int*)malloc(sizeof(int*)*N*N);
@@ -105,6 +134,7 @@ int ** graphMultiplier(int N, int ** A, int ** B)
 		}
 	}
 
+	/*행렬의 곱을 구하는 과정 3중 for문 사용 */
 	for (int i = 0; i < N; i++)
 	{
 		for (int j = 0; j < N; j++)
@@ -139,7 +169,15 @@ int judgeCutNode(int nodeNum,int size, int **originGraphMatrix)
 	{
 		for (int j = 0; j < size; j++)
 		{
+			valueCopyMatrix[i][j] = 0;
+		}
+	}
+	for (int i = 0; i < size; i++)
+	{
+		for (int j = 0; j < size; j++)
+		{
 			valueCopyMatrix[i][j] = originGraphMatrix[i][j];
+			valueCopyMatrix[i][j];
 		}
 	}
 
@@ -161,16 +199,20 @@ int judgeCutNode(int nodeNum,int size, int **originGraphMatrix)
 	}
 
 
-	/*탐색 대상 node의 행/렬 0으로 만듬 노드 컷팅*/
-	for (int i = 0; i < size; i++)
-		valueCopyMatrix[nodeNum][i] = 0;
-	for (int i = 0; i < size; i++)
-		valueCopyMatrix[i][nodeNum] = 0;
 
 
-	for (int i = 2; i < size; i++)
+	/*사용자가 입력한 정방행렬의 정보 띄워줌*/
+	printf("\n\n\n");
+	for (int i = 0; i < size; i++)
 	{
-		valueCopyMatrix = graphMultiplier(size, valueCopyMatrix, valueCopyMatrix);
+		for (int j = 0; j < size; j++)
+			printf("%d ",valueCopyMatrix[i][j]);
+		printf("\n");
+	}printf("\n\n\n");
+
+	for (int l = 2; l < size; l++)
+	{
+		
 
 		for (int i = 0; i < size; i++)
 		{
@@ -179,23 +221,42 @@ int judgeCutNode(int nodeNum,int size, int **originGraphMatrix)
 				judgeMatrix[i][j] += valueCopyMatrix[i][j];
 			}
 		}
+		valueCopyMatrix = graphMultiplier(size, valueCopyMatrix, valueCopyMatrix);
+
+		/*탐색 대상 node의 행/렬 0으로 만듬 노드 컷팅*/
+		/*for (int i = 0; i < size; i++)
+			judgeMatrix[nodeNum][i] = 0;
+		for (int i = 0; i < size; i++)
+			judgeMatrix[i][nodeNum] = 0;*/
+
+		/*탐색 대상 node의 행/렬 0으로 만듬 노드 컷팅*/
+		/*for (int i = 0; i < size; i++)
+			valueCopyMatrix[nodeNum][i] = 0;
+		for (int i = 0; i < size; i++)
+			valueCopyMatrix[i][nodeNum] = 0;*/
+		/*사용자가 입력한 정방행렬의 정보 띄워줌*/
+		printf("\n\n\n");
+		for (int i = 0; i < size; i++)
+		{
+			for (int j = 0; j < size; j++)
+				printf("%d ", valueCopyMatrix[i][j]);
+			printf("\n");
+		}printf("\n\n\n");
+
 	}
 
 	for (int i = 0; i < size; i++)
 	{
 		for (int j = 0; j < size; j++)
 		{
-			if (judgeMatrix[i][j] == 0) 
+			if (i != nodeNum&&j != nodeNum)
 			{
-				if (i == nodeNum || j == nodeNum)
+				if (judgeMatrix[i][j] == 0)
 				{
-					
-				}
-				else
-				{
-					return nodeNum;
+					return 1;
 				}
 			}
+		
 		}
 	}
 	return 0;
